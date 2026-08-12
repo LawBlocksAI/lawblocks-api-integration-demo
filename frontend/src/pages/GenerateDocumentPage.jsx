@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Country, State } from 'country-state-city';
 import ISO6391 from 'iso-639-1';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { FileText, Wand2, Loader2, Save, ArrowRight, ChevronDown } from 'lucide-react';
+import { FileText, Wand2, Loader2, ArrowRight, ChevronDown, Download } from 'lucide-react';
 import { ENDPOINTS } from '../utils/apiConstants';
 import api from '../services/api';
+import html2pdf from 'html2pdf.js';
 
 const CustomSelect = ({ options, value, onChange, placeholder, name, theme, disabled = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -193,6 +194,31 @@ const GenerateDocumentPage = ({ theme }) => {
     }
   };
 
+  const handleDownloadPDF = () => {
+    if (!documentContent) return;
+    
+    const element = document.createElement('div');
+    element.innerHTML = documentContent;
+    element.style.padding = '40px';
+    element.style.fontFamily = 'Arial, sans-serif';
+    element.style.lineHeight = '1.6';
+    element.style.color = '#000';
+    element.style.width = '700px';
+    element.style.boxSizing = 'border-box';
+    element.style.wordWrap = 'break-word';
+    
+    const opt = {
+      margin:       15,
+      filename:     'AI_Generated_Document.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: 'css', avoid: 'p, h1, h2, h3, h4, h5, h6, li, tr' }
+    };
+    
+    html2pdf().set(opt).from(element).save();
+  };
+
   // Custom toolbar for ReactQuill
   const modules = {
     toolbar: [
@@ -347,13 +373,16 @@ const GenerateDocumentPage = ({ theme }) => {
             )}
           </div>
           
-          <button 
-            disabled={!documentContent}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-slate-800 text-white rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors"
-          >
-            <Save size={16} />
-            Save Draft
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+              disabled={!documentContent}
+              onClick={handleDownloadPDF}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 transition-colors"
+            >
+              <Download size={16} />
+              Download PDF
+            </button>
+          </div>
         </div>
 
         <div className={`flex-1 min-h-[500px] ${theme === 'dark' ? 'quill-dark' : 'quill-light'}`}>
@@ -378,11 +407,11 @@ const GenerateDocumentPage = ({ theme }) => {
           border-color: #1e293b;
           font-family: inherit;
           font-size: 1rem;
+          height: 600px;
         }
         .quill-dark .ql-editor {
           color: #f8fafc;
-          min-height: 500px;
-          max-height: 70vh;
+          height: 100%;
           overflow-y: auto;
         }
         .quill-dark .ql-stroke {
@@ -406,10 +435,10 @@ const GenerateDocumentPage = ({ theme }) => {
           border-color: #e2e8f0;
           font-family: inherit;
           font-size: 1rem;
+          height: 600px;
         }
         .quill-light .ql-editor {
-          min-height: 500px;
-          max-height: 70vh;
+          height: 100%;
           overflow-y: auto;
         }
       `}} />
