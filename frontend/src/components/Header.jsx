@@ -34,8 +34,8 @@ export default function Header() {
               AI Generate
             </Link>
             <Link
-              to={ROUTES.HOME}
-              className={`flex items-center gap-2 transition-all ${isLinkActive(ROUTES.HOME) ? "text-primary-500 scale-105" : "text-slate-500 hover:text-slate-400"}`}
+              to={ROUTES.UPLOAD}
+              className={`flex items-center gap-2 transition-all ${isLinkActive(ROUTES.UPLOAD) ? "text-primary-500 scale-105" : "text-slate-500 hover:text-slate-400"}`}
             >
               <FilePlus size={18} />
               Upload
