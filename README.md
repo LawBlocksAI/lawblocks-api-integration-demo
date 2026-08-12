@@ -111,7 +111,6 @@ npm run dev
 
 The Express backend exposes the following endpoints to the React frontend, which in turn communicate with the **Marketplace APIs**:
 
-- `GET /api/documents` - Retrieve a list of documents from the Marketplace.
 - `POST /api/docsign/upload-doc` - Push a new document to the Marketplace.
 - `POST /api/docsign/session/init` - Trigger a new signing session via the Marketplace API.
 - `GET /api/docsign/token` - Validate and retrieve document details using a signing token.
