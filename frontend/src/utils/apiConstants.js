@@ -5,5 +5,6 @@ export const ENDPOINTS = {
   DOCUMENTS: "/api/documents",
   UPLOAD_DOCUMENT: "/api/docsign/upload-doc",
   SESSION_INIT: "/api/docsign/session/init",
-  GET_DOC_BY_TOKEN: "/api/docsign/token"
+  GET_DOC_BY_TOKEN: "/api/docsign/token",
+  GENERATE_DOCUMENT_WITH_AI: "/api/ai/generate-document",
 };
